@@ -13,9 +13,9 @@ public class MovingTarget : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.RotateAround(target.transform.position, Vector3.up, 0.3f);
-	}
+    }
 
-    void OnDrawGismos()
+    void OnDrawGizmosSelected()
     {
         float dist = Vector3.Distance(transform.position, target.transform.position);
         Vector3 prec = new Vector3(Mathf.Cos(0)*dist, transform.position.y, Mathf.Sin(0) * dist);
@@ -25,5 +25,6 @@ public class MovingTarget : MonoBehaviour {
             Gizmos.DrawLine(prec, next);
             prec = next;
         }
+       
     }
 }
