@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Turet : MonoBehaviour {
+public class Turret : MonoBehaviour {
 
-	public GameObject baseTuret;
-	public GameObject turet;
+	public GameObject baseTurret;
+	public GameObject turret;
 	public GameObject cannon;
     public float accelerationSpeed = 0.05f;
     public float bulletSpeed = 500;
@@ -21,6 +21,7 @@ public class Turet : MonoBehaviour {
 
     public bool autoMode = false;
 
+    public string targetName;
     private GameObject target;
     public Camera linkedCamera;
 
@@ -83,21 +84,21 @@ public class Turet : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftArrow) && !inputUpDown)
         {
-            baseTuret.transform.Rotate(Vector3.up);
+            baseTurret.transform.Rotate(Vector3.up);
         }
         if (Input.GetKey(KeyCode.RightArrow) && !inputUpDown)
         {
-            baseTuret.transform.Rotate(Vector3.down);
+            baseTurret.transform.Rotate(Vector3.down);
         }
         if (Input.GetKey(KeyCode.UpArrow) && !inputLeftRight)
         {
-            if (Vector3.Dot(turet.transform.forward.normalized, baseTuret.transform.up.normalized) < 0.8f)
-                turet.transform.Rotate(Vector3.left);
+            if (Vector3.Dot(turret.transform.forward.normalized, baseTurret.transform.up.normalized) < 0.8f)
+                turret.transform.Rotate(Vector3.left);
         }
         if (Input.GetKey(KeyCode.DownArrow) && !inputLeftRight)
         {
-            if (Vector3.Dot(turet.transform.forward.normalized, baseTuret.transform.up.normalized) > -0.5f)
-                turet.transform.Rotate(Vector3.right);
+            if (Vector3.Dot(turret.transform.forward.normalized, baseTurret.transform.up.normalized) > -0.5f)
+                turret.transform.Rotate(Vector3.right);
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow))
@@ -118,7 +119,6 @@ public class Turet : MonoBehaviour {
         }
     }
 
-
     void AutoMode() {
         if (target == null)
         {
@@ -132,15 +132,15 @@ public class Turet : MonoBehaviour {
 
         float step = 2 * Time.deltaTime;
 
-        Vector3 newDir = Vector3.RotateTowards(turet.transform.forward, (target.transform.position - turet.transform.position).normalized, step, 0.0f);
+        Vector3 newDir = Vector3.RotateTowards(turret.transform.forward, (target.transform.position - turret.transform.position).normalized, step, 0.0f);
 
-        float dot = Vector3.Dot(newDir, baseTuret.transform.up.normalized);
+        float dot = Vector3.Dot(newDir, baseTurret.transform.up.normalized);
         if (dot < 0.8f && dot > -0.5f)
         {
-            turet.transform.rotation = Quaternion.LookRotation(newDir);
+            turret.transform.rotation = Quaternion.LookRotation(newDir);
         }
 
-        float dotCannonTarget = Vector3.Dot(turet.transform.forward, (target.transform.position - turet.transform.position).normalized);
+        float dotCannonTarget = Vector3.Dot(turret.transform.forward, (target.transform.position - turret.transform.position).normalized);
 
         if (Mathf.Abs(dotCannonTarget) > 0.95)
         {
@@ -154,28 +154,28 @@ public class Turet : MonoBehaviour {
     }
 
     void UpdateCameraPosition() {
-        Vector3 pos = turet.transform.position - turet.transform.forward * 1.5f + turet.transform.up;
+        Vector3 pos = turret.transform.position - turret.transform.forward * 1.5f + turret.transform.up;
         float speed = 2.0f * Time.deltaTime;
         linkedCamera.transform.position = Vector3.MoveTowards(linkedCamera.transform.position, pos, speed);
-        Vector3 visor = turet.transform.position + turet.transform.up;
+        Vector3 visor = turret.transform.position + turret.transform.up;
         linkedCamera.transform.LookAt(visor);
     }
 
     void SearchTarget () {
         if (target != null) {
-            if (Vector3.Distance(target.transform.position, turet.transform.position) > maxDistance)
+            if (Vector3.Distance(target.transform.position, turret.transform.position) > maxDistance)
             {
                 target = null;
             }
         }
         if(target == null)
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetName);
             GameObject t = enemies[0];
-            float distT = Vector3.Distance(turet.transform.position, t.transform.position);
+            float distT = Vector3.Distance(turret.transform.position, t.transform.position);
             for(int i = 1; i < enemies.Length; ++i) {
                 GameObject e = enemies[i];
-                float distTmp = Vector3.Distance(turet.transform.position, e.transform.position);
+                float distTmp = Vector3.Distance(turret.transform.position, e.transform.position);
                 if (distTmp < distT && distTmp <= maxDistance) {
                     t = e;
                     distT = distTmp;

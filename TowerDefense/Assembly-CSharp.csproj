@@ -49,7 +49,7 @@
      <Compile Include="Assets\Scripts\BulletLifeTime.cs" />
      <Compile Include="Assets\Scripts\Levitation.cs" />
      <Compile Include="Assets\Scripts\MovingTarget.cs" />
-     <Compile Include="Assets\Scripts\Turet.cs" />
+     <Compile Include="Assets\Scripts\Turret.cs" />
      <None Include="Assets\Material\Fantasy Skybox FREE\Readme\Readme.txt" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>C:/Users/etu/Documents/GitHub/Unity-TowerDefense/TowerDefense/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
