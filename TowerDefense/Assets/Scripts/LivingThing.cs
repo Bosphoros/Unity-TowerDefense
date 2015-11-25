@@ -6,6 +6,7 @@ public class LivingThing : MonoBehaviour {
     public int initialLife;
     public int life;
 
+
 	// Use this for initialization
 	void Start () {
         life = initialLife;
@@ -15,6 +16,11 @@ public class LivingThing : MonoBehaviour {
         life -= dmg;
         if(life <= 0)
         {
+            ParticleSystem ps = GetComponent<ParticleSystem>();
+            if(ps != null)
+            {
+                ps.Play();
+            }
             gameObject.SetActive(false);
         }
     }
