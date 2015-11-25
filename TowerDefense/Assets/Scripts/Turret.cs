@@ -16,36 +16,37 @@ public class Turret : MonoBehaviour {
 
 
 	public ParticleSystem magicFiring;
-	public GameObject bullet;
+	public Poolable bullet;
 	private int timeShoot = 0;
 
     public bool autoMode = false;
 
     public string targetName;
     private GameObject target;
-    public Camera linkedCamera;
 
     public float maxDistance = 20;
 
+    private Pool pool;
+
 	// Use this for initialization
 	void Start () {
-
+        pool = new Pool(bullet);
 	}
 
     void Accelerate() {
-        rotationSpeed = Mathf.Min(10, rotationSpeed + accelerationSpeed);
-        cannon.transform.RotateAround(cannon.transform.position, cannon.transform.forward, rotationSpeed);
+        rotationSpeed = Mathf.Min(10, rotationSpeed + accelerationSpeed * Time.timeScale);
+        cannon.transform.RotateAround(cannon.transform.position, cannon.transform.forward, rotationSpeed * Time.timeScale);
     }
 
     void Decelerate() {
-        rotationSpeed = Mathf.Max(0, rotationSpeed - accelerationSpeed);
-        cannon.transform.RotateAround(cannon.transform.position, cannon.transform.forward, rotationSpeed);
+        rotationSpeed = Mathf.Max(0, rotationSpeed - accelerationSpeed * Time.timeScale);
+        cannon.transform.RotateAround(cannon.transform.position, cannon.transform.forward, rotationSpeed * Time.timeScale);
     }
 
     void Fire() {
         if (timeShoot > thresholdFire)
         {
-            GameObject bul = Instantiate(bullet);
+            GameObject bul = pool.getInactive();
             bul.transform.position = cannon.transform.position;
             bul.transform.forward = cannon.transform.forward;
             bul.transform.Rotate(new Vector3(90, 0, 0));
@@ -153,17 +154,11 @@ public class Turret : MonoBehaviour {
         }
     }
 
-    void UpdateCameraPosition() {
-        Vector3 pos = turret.transform.position - turret.transform.forward * 1.5f + turret.transform.up;
-        float speed = 2.0f * Time.deltaTime;
-        linkedCamera.transform.position = Vector3.MoveTowards(linkedCamera.transform.position, pos, speed);
-        Vector3 visor = turret.transform.position + turret.transform.up;
-        linkedCamera.transform.LookAt(visor);
-    }
+
 
     void SearchTarget () {
         if (target != null) {
-            if (Vector3.Distance(target.transform.position, turret.transform.position) > maxDistance)
+            if (Vector3.Distance(target.transform.position, turret.transform.position) > maxDistance || !target.activeInHierarchy)
             {
                 target = null;
             }
@@ -171,18 +166,24 @@ public class Turret : MonoBehaviour {
         if(target == null)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetName);
-            GameObject t = enemies[0];
-            float distT = Vector3.Distance(turret.transform.position, t.transform.position);
-            for(int i = 1; i < enemies.Length; ++i) {
-                GameObject e = enemies[i];
-                float distTmp = Vector3.Distance(turret.transform.position, e.transform.position);
-                if (distTmp < distT && distTmp <= maxDistance) {
-                    t = e;
-                    distT = distTmp;
+            if (enemies.Length > 1)
+            {
+                GameObject t = enemies[0];
+                float distT = Vector3.Distance(turret.transform.position, t.transform.position);
+                for (int i = 1; i < enemies.Length; ++i)
+                {
+                    GameObject e = enemies[i];
+                    float distTmp = Vector3.Distance(turret.transform.position, e.transform.position);
+                    if (distTmp < distT && distTmp <= maxDistance)
+                    {
+                        t = e;
+                        distT = distTmp;
+                    }
                 }
-            }
-            if(distT <= maxDistance) {
-                target = t;
+                if (distT <= maxDistance)
+                {
+                    target = t;
+                }
             }
         }
     }
@@ -208,8 +209,6 @@ public class Turret : MonoBehaviour {
         else {
             AutoMode(); 
         }
-
-        UpdateCameraPosition();
 
         if (Input.GetKeyDown(KeyCode.A)) {
             autoMode = !autoMode;
