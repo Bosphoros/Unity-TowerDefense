@@ -8,7 +8,7 @@ public class LivingThing : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         life = initialLife;
 	}
 	
@@ -16,13 +16,19 @@ public class LivingThing : MonoBehaviour {
         life -= dmg;
         if(life <= 0)
         {
-            ParticleSystem ps = GetComponent<ParticleSystem>();
+            ParticleSystem ps = gameObject.GetComponent<ParticleSystem>();
             if(ps != null)
             {
                 ps.Play();
             }
-            gameObject.SetActive(false);
+            StartCoroutine("Despawn");
         }
+    }
+
+    IEnumerator Despawn()
+    {
+        yield return new WaitForSeconds(5);
+        gameObject.SetActive(false);
     }
 
     public void Reset()

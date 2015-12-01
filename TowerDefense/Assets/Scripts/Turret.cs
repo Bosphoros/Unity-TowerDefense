@@ -156,25 +156,36 @@ public class Turret : MonoBehaviour {
 
 
 
-    void SearchTarget () {
-        if (target != null) {
-            if (Vector3.Distance(target.transform.position, turret.transform.position) > maxDistance || !target.activeInHierarchy)
+    void SearchTarget()
+    {
+
+        if (target != null)
+        {
+            LivingThing lt = target.GetComponent<LivingThing>();
+            if (Vector3.Distance(target.transform.position, turret.transform.position) > maxDistance || !target.gameObject.activeInHierarchy || (lt != null && lt.life <= 0))
             {
                 target = null;
             }
         }
-        if(target == null)
+        if (target == null)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetName);
-            if (enemies.Length > 1)
+            if (enemies.Length >= 1)
             {
                 GameObject t = enemies[0];
-                float distT = Vector3.Distance(turret.transform.position, t.transform.position);
+                LivingThing ltt = t.GetComponent<LivingThing>();
+                if (ltt == null || ltt.life <= 0)
+                {
+                    t = null;
+                }
+                float distT = t == null ? float.PositiveInfinity : Vector3.Distance(turret.transform.position, t.transform.position);
                 for (int i = 1; i < enemies.Length; ++i)
                 {
                     GameObject e = enemies[i];
+                    LivingThing ltt2 = e.GetComponent<LivingThing>();
                     float distTmp = Vector3.Distance(turret.transform.position, e.transform.position);
-                    if (distTmp < distT && distTmp <= maxDistance)
+                    bool distance = distTmp < distT && distTmp <= maxDistance;
+                    if (t == null && distance || (ltt2 != null && ltt2.life > 0) && distance)
                     {
                         t = e;
                         distT = distTmp;
@@ -188,8 +199,8 @@ public class Turret : MonoBehaviour {
         }
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
 	
 		if (rotationSpeed > thresholdShoot) {
 			if(!magicFiring.isPlaying)
