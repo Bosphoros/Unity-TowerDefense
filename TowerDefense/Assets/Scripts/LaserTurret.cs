@@ -45,7 +45,10 @@ public class LaserTurret : MonoBehaviour {
                 LivingThing lt = hitInfo.collider.gameObject.GetComponent<LivingThing>();
                 if (lt != null)
                 {
-                    lt.Damage(damage);
+                    if (hitInfo.collider.gameObject.GetComponent<RegenShield>() != null)
+                        ((RegenShield)lt).Damage(damage);
+                    else
+                        lt.Damage(damage);
                     if (lt.life <= 0)
                     {
                         Rigidbody rb = lt.gameObject.GetComponent<Rigidbody>();

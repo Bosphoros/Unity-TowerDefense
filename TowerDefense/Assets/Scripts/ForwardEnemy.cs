@@ -22,7 +22,7 @@ public class ForwardEnemy : MonoBehaviour
         float speed = movementSpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
 
-        if (Vector3.Distance(target.transform.position, transform.position) <= range)
+        if (Vector3.Distance(target.transform.position, transform.position) <= range && target.gameObject.activeInHierarchy)
         {
             target.Damage(damage);
             GetComponent<Poolable>().Reset();

@@ -31,8 +31,13 @@ public class RegenShield : LivingThing {
 
     IEnumerator Regen()
     {
-        gameObject.SetActive(false);
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        Reset();
+
         yield return new WaitForSeconds(regenTime);
-        gameObject.SetActive(true);
+
+        gameObject.GetComponent<BoxCollider>().enabled = true;
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
     }
 }

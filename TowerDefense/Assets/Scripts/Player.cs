@@ -34,6 +34,9 @@ public class Player : LivingThing
         GUI.Label(new Rect(10, 50, 200, 20), "Best : " + ((int)(PlayerPrefs.GetFloat("Time survived")*100.0f))/100.0f);
 
         GUI.Label(new Rect(200, 10, 200, 20), "Repulse : " + Mathf.Clamp((int)(20 - repulseCD), 0, 20));
+
+        GUI.Label(new Rect(400, 10, 200, 20), "Laser turrets : " + laserTurrets + "/" + maxLaserTurrets);
+        GUI.Label(new Rect(400, 30, 200, 20), "Explosive turrets : " + explosiveTurrets + "/" + maxExplosiveTurrets);
         if (life <= 0)
         {
             float prev = PlayerPrefs.GetFloat("Time survived");
@@ -78,7 +81,7 @@ public class Player : LivingThing
                         Rigidbody rb = lt.gameObject.GetComponent<Rigidbody>();
                         if (rb != null)
                         {
-                            rb.AddForce((o.transform.position - pos).normalized * reduc * 500);
+                            rb.AddForce((o.transform.position - pos).normalized * reduc * 200);
                         }
                     }
                 }
