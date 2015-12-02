@@ -5,16 +5,6 @@ public class RegenShield : LivingThing {
 
     public float regenTime;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     new public void Damage(int dmg)
     {
         life -= dmg;
@@ -25,18 +15,21 @@ public class RegenShield : LivingThing {
             {
                 ps.Play();
             }
-            StartCoroutine("Regen");
+            Disappear();
         }
     }
 
-    IEnumerator Regen()
+    void Disappear()
     {
         gameObject.GetComponent<BoxCollider>().enabled = false;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         Reset();
 
-        yield return new WaitForSeconds(regenTime);
+        Invoke("Regen", regenTime);
+    }
 
+    void Regen()
+    {
         gameObject.GetComponent<BoxCollider>().enabled = true;
         gameObject.GetComponent<MeshRenderer>().enabled = true;
     }

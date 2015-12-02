@@ -21,13 +21,12 @@ public class LivingThing : MonoBehaviour {
             {
                 ps.Play();
             }
-            StartCoroutine("Despawn");
+            Invoke("Despawn", 5);
         }
     }
 
-    IEnumerator Despawn()
+    void Despawn()
     {
-        yield return new WaitForSeconds(5);
         gameObject.SetActive(false);
     }
 
@@ -36,8 +35,8 @@ public class LivingThing : MonoBehaviour {
         life = initialLife;
     }
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void OnDisable()
+    {
+        Reset();
+    }
 }

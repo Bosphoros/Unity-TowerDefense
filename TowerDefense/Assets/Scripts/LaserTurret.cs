@@ -23,9 +23,12 @@ public class LaserTurret : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        
+
+        SearchTarget();
+
         if (target != null)
         {
+            crystal.GetComponent<Levitation>().rotationSpeed = 90;
             if(fireTime >= fireRate*0.9)
             {
                 lr.SetPosition(1, target.gameObject.transform.position);
@@ -42,19 +45,20 @@ public class LaserTurret : MonoBehaviour {
                 Ray r = new Ray(crystal.transform.position, dir);
                 RaycastHit hitInfo;
                 Physics.Raycast(r, out hitInfo, maxDistance);
-                LivingThing lt = hitInfo.collider.gameObject.GetComponent<LivingThing>();
-                if (lt != null)
+                Enemy enmy = hitInfo.collider.gameObject.GetComponent<Enemy>();
+                if (enmy != null)
                 {
+                    LivingThing lt = enmy.body;
                     if (hitInfo.collider.gameObject.GetComponent<RegenShield>() != null)
                         ((RegenShield)lt).Damage(damage);
                     else
                         lt.Damage(damage);
                     if (lt.life <= 0)
                     {
-                        Rigidbody rb = lt.gameObject.GetComponent<Rigidbody>();
+                        Rigidbody rb = enmy.gameObject.GetComponent<Rigidbody>();
                         if (rb != null)
                         {
-                            rb.AddForce(dir.normalized * 500);
+                            rb.AddForce(dir.normalized * 5, ForceMode.Impulse);
                         }
                     }
                 }
@@ -64,9 +68,10 @@ public class LaserTurret : MonoBehaviour {
         }
         else
         {
+            crystal.GetComponent<Levitation>().rotationSpeed = 0;
             lr.enabled = false;
         }
-        SearchTarget();
+        
 
     }
 

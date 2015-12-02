@@ -17,7 +17,7 @@ public class Turret : MonoBehaviour {
 
 	public ParticleSystem magicFiring;
 	public Poolable bullet;
-	private int timeShoot = 0;
+	private float timeShoot = 0;
 
     public bool autoMode = false;
 
@@ -51,6 +51,7 @@ public class Turret : MonoBehaviour {
             bul.transform.forward = cannon.transform.forward;
             bul.transform.Rotate(new Vector3(90, 0, 0));
             bul.GetComponent<Rigidbody>().AddForce(cannon.transform.forward * bulletSpeed);
+            bul.transform.SetParent(gameObject.transform);
             timeShoot = 0;
         }
     }
@@ -185,7 +186,7 @@ public class Turret : MonoBehaviour {
                     LivingThing ltt2 = e.GetComponent<LivingThing>();
                     float distTmp = Vector3.Distance(turret.transform.position, e.transform.position);
                     bool distance = distTmp < distT && distTmp <= maxDistance;
-                    if (t == null && distance || (ltt2 != null && ltt2.life > 0) && distance)
+                    if (t == null && distance || (ltt2 != null && ltt2.life > 0) && distance && ltt2.life > 0)
                     {
                         t = e;
                         distT = distTmp;
@@ -201,18 +202,18 @@ public class Turret : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	
+
+	    SearchTarget();
+
 		if (rotationSpeed > thresholdShoot) {
 			if(!magicFiring.isPlaying)
 				magicFiring.Play ();
-			timeShoot++;
+			timeShoot += 1*Time.timeScale;
 		} else {
 			if(!magicFiring.isStopped)
 				magicFiring.Stop ();
 			timeShoot = 0;
 		}
-
-        SearchTarget();
 
         if (!autoMode) {
             ManualMode();

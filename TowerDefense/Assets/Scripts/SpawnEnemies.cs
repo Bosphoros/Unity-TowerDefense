@@ -8,6 +8,7 @@ public class SpawnEnemies : MonoBehaviour {
     public GameObject target;
     public float radius;
     private bool doSpawn = true;
+    public float timeSpawn;
 
 	// Use this for initialization
 	void Start () {
@@ -25,19 +26,33 @@ public class SpawnEnemies : MonoBehaviour {
         doSpawn = false;
     }
 
+    void OnDrawGizmos()
+    {
+        Vector3 prec = new Vector3(Mathf.Cos(0) * radius, transform.position.y, Mathf.Sin(0) * radius) + gameObject.transform.position;
+        for (int i = 1; i < 360; ++i)
+        {
+            Vector3 next = new Vector3(Mathf.Cos(i / (Mathf.PI * 2)) * radius, transform.position.y, Mathf.Sin(i / (Mathf.PI * 2)) * radius) + gameObject.transform.position;
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(prec, next);
+            prec = next;
+        }
+    }
+
     IEnumerator Spawn() {
 
         while (doSpawn)
         {
             GameObject enmy = pool.getInactive();
+            if(enmy.GetComponent<LivingThing>() != null)
             enmy.GetComponent<LivingThing>().Reset();
             float range = Random.Range(0, radius);
             Vector3 circle = Random.insideUnitCircle;
             Vector3 center = gameObject.transform.position;
-            Vector3 spawnPosition = new Vector3(center.x + circle.x * range, center.y, center.z + circle.z * range);
+            Vector3 spawnPosition = new Vector3(center.x + circle.x * range, center.y, center.z + circle.y * range);
             enmy.transform.position = spawnPosition;
             enmy.transform.LookAt(target.transform);
-            yield return new WaitForSeconds(2.0f);
+            enmy.transform.SetParent(gameObject.transform);
+            yield return new WaitForSeconds(timeSpawn);
         }
     }
 	

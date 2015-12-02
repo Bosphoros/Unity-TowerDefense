@@ -18,7 +18,7 @@ public class Levitation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		time++;
-		this.transform.Rotate (Time.fixedDeltaTime * Vector3.up * rotationSpeed * (int) rotation);
-		transform.Translate (Time.fixedDeltaTime * Mathf.Cos (time/60) * Vector3.up * levitationHeight);
+		this.transform.Rotate (Time.timeScale * Time.fixedDeltaTime * Vector3.up * rotationSpeed * (int) rotation);
+		transform.Translate (Time.timeScale * Time.fixedDeltaTime * Mathf.Cos (time/60) * Vector3.up * levitationHeight);
 	}
 }
