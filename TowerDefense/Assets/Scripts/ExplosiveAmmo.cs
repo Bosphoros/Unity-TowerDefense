@@ -43,6 +43,7 @@ public class ExplosiveAmmo : Poolable {
                 }
             }
         }
+		AudioManager.GetInstance ().Play ("Energybomb", true, false, AudioManager.spatialization.AUDIO_2D);
     }
 
 }

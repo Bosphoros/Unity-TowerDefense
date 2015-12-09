@@ -30,6 +30,7 @@ public class Player : LivingThing
         freezeCD = freezeWait;
 
         grid = new Grid();
+		AudioManager.GetInstance ().Play ("Ambient", true, AudioManager.spatialization.AUDIO_2D);
 	}
 
     void Awake()
@@ -54,6 +55,7 @@ public class Player : LivingThing
             PlayerPrefs.SetFloat("Time survived", Mathf.Max(prev, lifeTime));
             GUI.Label(new Rect(200, 200, 500, 250), "Game Over");
             Time.timeScale = 0;
+			AudioManager.GetInstance().Mute(true);
         }
     }
 

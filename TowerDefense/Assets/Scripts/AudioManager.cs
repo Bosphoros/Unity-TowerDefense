@@ -6,18 +6,20 @@ public class AudioManager {
 
 	public enum spatialization : int {AUDIO_2D = 0, AUDIO_3D = 1};
 
-	private List<AudioSource> audiosources;
-	private AudioManager instance;
+
+	private Dictionary<string, AudioData> sounds;
+	private List<GameObject> audiosources;
+	static private AudioManager instance;
 
 	private AudioManager() {
-		audiosources = new List<AudioSource>();
-		for (int i = 0; i < 10; ++i) {
-			AudioSource tmp = new AudioSource();
-			audiosources.Add(tmp);
-			tmp.
+		audiosources = new List<GameObject>();
+		sounds = new Dictionary<string, AudioData> ();
+		for (int i = 0; i < 50; ++i) {
+			GameObject obj = new GameObject();
+			obj.AddComponent<AudioSource>();
+			audiosources.Add(obj);
 		}
 	}
-
 
 	public static AudioManager GetInstance() {
 		if (instance == null) {
@@ -27,12 +29,79 @@ public class AudioManager {
 	}
 
 	public void Mute(bool m) {
-		foreach (AudioSource a in audiosources) {
-			a.mute = m;
+		foreach (GameObject a in audiosources) {
+			a.GetComponent<AudioSource>().mute = m;
 		}
 	}
 
-	public void Play(bool fadein = false, spatialization space = 1) {
+	public bool Register(string name, AudioData data) {
+		if (sounds.ContainsKey (name)) {
+			return false;
+		}
+		sounds.Add (name, data);
+		return true;
+	}
 
+	public bool Withdraw(string name) {
+		if (!sounds.ContainsKey (name)) {
+			return false;
+		}
+		sounds.Remove (name);
+		return true;
+	}
+
+	private AudioSource GetFreeAudioSource(int priority) {
+
+		int least = int.MinValue;
+		int leastId = -1;
+		AudioSource auSo;
+		for (int i = 0; i < audiosources.Count; ++i) {
+			auSo = audiosources[i].GetComponent<AudioSource>();
+			if( !auSo.isPlaying) {
+				return auSo;
+			}
+			if(auSo.priority >= least && auSo.priority >= priority) {
+				least = auSo.priority;
+				leastId = i;
+			}
+		}
+		if (leastId != -1) {
+			auSo = audiosources [leastId].GetComponent<AudioSource> ();
+			auSo.Stop ();
+			return auSo;
+		}
+		return null;
+	}
+
+	public void Play(string soundName) {
+		Play (soundName, false, spatialization.AUDIO_2D);
+	}
+
+	public void Play(string soundName, bool loop, spatialization space = spatialization.AUDIO_2D, float distMin = 0, float distMax = 0) {
+		Play (soundName, false, loop, space, distMin, distMax);
+	}
+
+	public void Play(string soundName, bool randPitch, bool loop, spatialization space = spatialization.AUDIO_2D, float distMin = 0, float distMax = 0) {
+		Play (soundName, randPitch, loop, space, Vector3.zero, distMin, distMax);
+	}
+
+	public void Play(string soundName, bool randPitch, bool loop, spatialization space, Vector3 pos, float distMin = 0, float distMax = 0) {
+		AudioData ad = sounds [soundName];
+		if (ad != null) {
+			AudioSource auSo = GetFreeAudioSource(ad.priority);
+			auSo.clip = ad.GetClip();
+			auSo.outputAudioMixerGroup = ad.group;
+			auSo.spatialBlend = (float) space;
+			auSo.gameObject.transform.position = pos;
+			auSo.minDistance = distMin;
+			auSo.maxDistance = distMax;
+			if(randPitch) {
+				auSo.pitch = Random.Range(ad.pitchMin, ad.pitchMax);
+			}
+			else {
+				auSo.pitch = 1;
+			}
+			auSo.Play();
+		}
 	}
 }

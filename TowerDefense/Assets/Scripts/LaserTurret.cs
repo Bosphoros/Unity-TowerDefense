@@ -61,6 +61,7 @@ public class LaserTurret : MonoBehaviour {
                             rb.AddForce(dir.normalized * 5, ForceMode.Impulse);
                         }
                     }
+					AudioManager.GetInstance().Play ("L4z0R", true, false, AudioManager.spatialization.AUDIO_2D);
                 }
                 fireTime = 0;
             }
