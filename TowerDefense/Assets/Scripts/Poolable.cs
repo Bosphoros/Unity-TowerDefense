@@ -14,7 +14,7 @@ public class Poolable : MonoBehaviour {
     public void Reset() {
         gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        //gameObject.GetComponent<MeshRenderer>().enabled = false;
         gameObject.SetActive(false);
     }
 

@@ -18,7 +18,7 @@ public class ProtectedEnemy : Poolable {
     {
         enemy.gameObject.SetActive(true);
         enemy.gameObject.transform.position = gameObject.transform.position;
-        shields.SetActive(true);
+        //shields.SetActive(true);
     }
 
 	// Update is called once per frame

@@ -44,7 +44,7 @@ public class SpawnEnemies : MonoBehaviour {
         {
             GameObject enmy = pool.getInactive();
             if(enmy.GetComponent<LivingThing>() != null)
-            enmy.GetComponent<LivingThing>().Reset();
+                enmy.GetComponent<LivingThing>().Reset();
             float range = Random.Range(0, radius);
             Vector3 circle = Random.insideUnitCircle;
             Vector3 center = gameObject.transform.position;
@@ -52,6 +52,8 @@ public class SpawnEnemies : MonoBehaviour {
             enmy.transform.position = spawnPosition;
             enmy.transform.LookAt(target.transform);
             enmy.transform.SetParent(gameObject.transform);
+            enmy.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            enmy.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             yield return new WaitForSeconds(timeSpawn);
         }
     }
