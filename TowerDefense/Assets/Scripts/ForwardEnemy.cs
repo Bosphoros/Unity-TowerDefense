@@ -1,38 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ForwardEnemy : MonoBehaviour
+public class ForwardEnemy : Enemy
 {
 
     public LivingThing target;
     public float movementSpeed;
-    public float range;
     public int damage;
+    public float freezeTime;
 
     // Use this for initialization
     void Start()
     {
-
+        freezeTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 targetPos = target.transform.position;
-        float speed = movementSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
-
-        if (Vector3.Distance(target.transform.position, transform.position) <= range && target.gameObject.activeInHierarchy)
+        if(freezeTime <= 0)
         {
-            target.Damage(damage);
-            GetComponent<Poolable>().Reset();
+            Vector3 targetPos = target.transform.position;
+            float speed = movementSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
         }
-
+        else {
+            freezeTime -= Time.deltaTime;
+        }
     }
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, target.transform.position);
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        if (c.gameObject.CompareTag("Player") && body.life > 0)
+        {
+            Player p = c.gameObject.GetComponent<Player>();
+            p.Damage(damage);
+            gameObject.SetActive(false);
+        }
+        
     }
 }
