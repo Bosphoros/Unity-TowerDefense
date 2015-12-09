@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Assets\Graphics\Material\Fantasy Skybox FREE\Scripts\FSPlayer.cs" />
     <Compile Include="Assets\Scripts\AmmunitionCollide.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\BulletLifeTime.cs" />
     <Compile Include="Assets\Scripts\ExplosiveAmmo.cs" />
     <Compile Include="Assets\Scripts\ForwardEnemy.cs" />
