@@ -10,7 +10,7 @@ public class CameraManager {
 	RegisterFadeScreen fadescreen;
 
 	string nextCamera;
-	bool isStable = false;
+	bool isStable = true;
 
 	private CameraManager() {
 		cameras = new Dictionary<string, GameObject> ();
@@ -47,6 +47,29 @@ public class CameraManager {
 		active.transform.RotateAround (center, Vector3.up, speed * Time.timeScale);
 	}
 
+    public void LookAt(GameObject go)
+    {
+        active.transform.LookAt(go.transform);
+    }
+
+    public void MoveForward(float speed)
+    {
+        Transform t = active.transform;
+        MoveTo(t.position + t.forward, speed); 
+    }
+
+    public void MoveBackward(Vector3 pos, float speed)
+    {
+        Transform t = active.transform;
+        MoveTo(t.position - t.forward, speed);
+    }
+
+    public void MoveTo(Vector3 pos, float speed)
+    {
+        Vector3 p = Vector3.MoveTowards(active.transform.position, pos, speed);
+        active.transform.position = p;
+    }
+
 	public void FadeTo(string cameraName) {
 		if (cameras.ContainsKey (cameraName)) {
 			isStable = false;
@@ -55,11 +78,12 @@ public class CameraManager {
 			fadescreen.FadeTime ();
 		}
 		else
-			Debug.Log ("Doesn't exist");
+			Debug.Log ("Does not exist");
 	}
 
 	public void ActivateMain(){
 		active.enabled = false;
+        Debug.Log("Changing");
 		active = cameras [nextCamera].GetComponent<Camera> ();
 		active.enabled = true;
 		nextCamera = "";

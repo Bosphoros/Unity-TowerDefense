@@ -18,6 +18,7 @@ public class AudioManager {
 			GameObject obj = new GameObject();
 			obj.AddComponent<AudioSource>();
 			audiosources.Add(obj);
+            obj.transform.name = "Audiosource";
 		}
 	}
 
@@ -104,4 +105,13 @@ public class AudioManager {
 			auSo.Play();
 		}
 	}
+
+    public void FreeResources()
+    {
+        foreach(GameObject go in audiosources)
+        {
+            UnityEngine.Object.Destroy(go);
+        }
+    }
+
 }

@@ -57,6 +57,12 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -69,29 +75,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Graphics\Materials\Fantasy Skybox FREE\Scripts\FSPlayer.cs" />
-    <Compile Include="Assets\Scripts\AmmunitionCollide.cs" />
-    <Compile Include="Assets\Scripts\AudioData.cs" />
-    <Compile Include="Assets\Scripts\AudioManager.cs" />
-    <Compile Include="Assets\Scripts\BulletLifeTime.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\ExplosiveAmmo.cs" />
-    <Compile Include="Assets\Scripts\ForwardEnemy.cs" />
+    <Compile Include="Assets\Graphics\Materials\Water Flow Free\Scripts\WaterFlow.cs" />
+    <Compile Include="Assets\Graphics\Materials\Water Flow Free\Scripts\WaterFlowDemo.cs" />
+    <Compile Include="Assets\Graphics\Materials\Water Flow Free\Scripts\WaterFlowOrbitCamera.cs" />
+    <Compile Include="Assets\Scripts\Audio\AudioData.cs" />
+    <Compile Include="Assets\Scripts\Camera\MovingCamera.cs" />
+    <Compile Include="Assets\Scripts\Camera\RegisterCamera.cs" />
+    <Compile Include="Assets\Scripts\Camera\RegisterFadeScreen.cs" />
+    <Compile Include="Assets\Scripts\CharacterCinematic.cs" />
+    <Compile Include="Assets\Scripts\Cinematic.cs" />
     <Compile Include="Assets\Scripts\Grid.cs" />
-    <Compile Include="Assets\Scripts\LaserTurret.cs" />
     <Compile Include="Assets\Scripts\Levitation.cs" />
-    <Compile Include="Assets\Scripts\LivingThing.cs" />
-    <Compile Include="Assets\Scripts\MovingCamera.cs" />
-    <Compile Include="Assets\Scripts\MovingTarget.cs" />
+    <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Pool.cs" />
     <Compile Include="Assets\Scripts\Poolable.cs" />
-    <Compile Include="Assets\Scripts\ProtectedEnemy.cs" />
-    <Compile Include="Assets\Scripts\RegenShield.cs" />
     <Compile Include="Assets\Scripts\SpawnEnemies.cs" />
-    <Compile Include="Assets\Scripts\Turret.cs" />
+    <Compile Include="Assets\Scripts\Turrets\AmmunitionCollide.cs" />
+    <Compile Include="Assets\Scripts\Turrets\BulletLifeTime.cs" />
+    <Compile Include="Assets\Scripts\Turrets\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Turrets\ExplosiveAmmo.cs" />
+    <Compile Include="Assets\Scripts\Turrets\ForwardEnemy.cs" />
+    <Compile Include="Assets\Scripts\Turrets\LaserTurret.cs" />
+    <Compile Include="Assets\Scripts\Turrets\LivingThing.cs" />
+    <Compile Include="Assets\Scripts\Turrets\MovingTarget.cs" />
+    <Compile Include="Assets\Scripts\Turrets\ProtectedEnemy.cs" />
+    <Compile Include="Assets\Scripts\Turrets\RegenShield.cs" />
+    <Compile Include="Assets\Scripts\Turrets\Turret.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Audio\Fantasy SFX for Particle Distort Texture effect library\readme_Fantasy SFX for Particle Distort Texture effect library.txt" />
     <None Include="Assets\Graphics\Materials\Fantasy Skybox FREE\Readme\Readme.txt" />
+    <None Include="Assets\Graphics\Materials\Water Flow Free\!Readme.txt" />
+    <None Include="Assets\Graphics\Materials\Water Flow Free\Shaders\Water Simple.shader" />
+    <None Include="Assets\Resources\Medieval_Toon_Character\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

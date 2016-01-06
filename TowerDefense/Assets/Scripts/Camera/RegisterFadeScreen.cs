@@ -25,25 +25,25 @@ public class RegisterFadeScreen : MonoBehaviour {
 
 	public void Reverse() {
 		fadeIn = !fadeIn;
-		remainingTime = 2;
+		remainingTime = 1;
 	}
 
 	void FadeIn() {
-		float a = Mathf.Clamp01 (remainingTime / 2);
+		float a = Mathf.Clamp01 (remainingTime / 1);
 		Color c = new Color (image.color.r, image.color.g, image.color.b, a);
 		image.color = c;
 		remainingTime = Mathf.Clamp01 (remainingTime - Time.deltaTime);
 	}
 
 	void FadeOut() {
-		float a = Mathf.Clamp01 (1 - remainingTime / 2);
+		float a = Mathf.Clamp01 (1 - remainingTime / 1);
 		Color c = new Color (image.color.r, image.color.g, image.color.b, a);
 		image.color = c;
 		remainingTime = Mathf.Clamp01 (remainingTime - Time.deltaTime);
 	}
 
 	public void FadeTime() {
-		Invoke ("FadeEnd", 2);
+		Invoke ("FadeEnd", 1);
 	}
 
 	void FadeEnd() {
