@@ -6,10 +6,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{17BB7AF0-A1AD-DCE4-09CE-1D3A3635465B}</ProjectGuid>
+    <ProjectGuid>{5F95D981-FB5B-ACB3-C256-4D61F2AF9A70}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-UnityScript</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
@@ -45,39 +45,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Graphics\Materials\Fantasy Skybox FREE\Scripts\FSPlayer.cs" />
-     <Compile Include="Assets\Graphics\Materials\Water Flow Free\Scripts\WaterFlow.cs" />
-     <Compile Include="Assets\Graphics\Materials\Water Flow Free\Scripts\WaterFlowDemo.cs" />
-     <Compile Include="Assets\Graphics\Materials\Water Flow Free\Scripts\WaterFlowOrbitCamera.cs" />
-     <Compile Include="Assets\Scripts\Audio\AudioData.cs" />
-     <Compile Include="Assets\Scripts\Camera\MovingCamera.cs" />
-     <Compile Include="Assets\Scripts\Camera\RegisterCamera.cs" />
-     <Compile Include="Assets\Scripts\Camera\RegisterFadeScreen.cs" />
-     <Compile Include="Assets\Scripts\CharacterCutscene.cs" />
-     <Compile Include="Assets\Scripts\Cutscene.cs" />
-     <Compile Include="Assets\Scripts\Grid.cs" />
-     <Compile Include="Assets\Scripts\Levitation.cs" />
-     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
-     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
-     <Compile Include="Assets\Scripts\Player.cs" />
-     <Compile Include="Assets\Scripts\Pool.cs" />
-     <Compile Include="Assets\Scripts\Poolable.cs" />
-     <Compile Include="Assets\Scripts\SpawnEnemies.cs" />
-     <Compile Include="Assets\Scripts\Turrets\AmmunitionCollide.cs" />
-     <Compile Include="Assets\Scripts\Turrets\BulletLifeTime.cs" />
-     <Compile Include="Assets\Scripts\Turrets\Enemy.cs" />
-     <Compile Include="Assets\Scripts\Turrets\ExplosiveAmmo.cs" />
-     <Compile Include="Assets\Scripts\Turrets\ForwardEnemy.cs" />
-     <Compile Include="Assets\Scripts\Turrets\LaserTurret.cs" />
-     <Compile Include="Assets\Scripts\Turrets\LivingThing.cs" />
-     <Compile Include="Assets\Scripts\Turrets\MovingTarget.cs" />
-     <Compile Include="Assets\Scripts\Turrets\ProtectedEnemy.cs" />
-     <Compile Include="Assets\Scripts\Turrets\RegenShield.cs" />
-     <Compile Include="Assets\Scripts\Turrets\Turret.cs" />
-     <Compile Include="Assets\_MK\_MKGlowSystem\_Demo\Code\MK_DemoControl.cs" />
-     <Compile Include="Assets\_MK\_MKGlowSystem\_Demo\Code\MK_RotateObject.cs" />
-     <Compile Include="Assets\_MK\_MKGlowSystem\_Internal\MKGlow.cs" />
-     <Compile Include="Assets\_MK\_MKGlowSystem\_Internal\MKGlowSystemHelpWindow.cs" />
+     <Compile Include="Assets\Resources\Medieval_Toon_Character\Source\Scripts\ChangeFaces.js" />
+     <Compile Include="Assets\Resources\Medieval_Toon_Character\Source\Scripts\ChangeFacesClick.js" />
+     <Compile Include="Assets\Resources\Medieval_Toon_Character\Source\Scripts\Character_Animations.js" />
+     <Compile Include="Assets\Resources\Medieval_Toon_Character\Source\Scripts\FaceAnimations.js" />
+     <Compile Include="Assets\Resources\Medieval_Toon_Character\Source\Scripts\GUIInstructions.js" />
+     <Compile Include="Assets\Resources\Medieval_Toon_Character\Source\Scripts\PlayFaceAnimations.js" />
      <None Include="Assets\_MK\_MKGlowSystem\_Shader\_MKBase\Mobile\MK_Mobile-Diffuse.shader" />
      <None Include="Assets\_MK\_MKGlowSystem\_Shader\_MKBase\Illumin\MK_Illumin-Glossy.shader" />
      <None Include="Assets\_MK\_MKGlowSystem\_Shader\_MKBase\Cutout\MK_Cutout-Glossy.shader" />

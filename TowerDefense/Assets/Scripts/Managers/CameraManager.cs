@@ -28,7 +28,6 @@ public class CameraManager {
 			cameras.Add (name, c);
 			if (active == null) {
 				active = c.GetComponent<Camera> ();
-				Debug.Log (name);
 				active.enabled = true;
 			} else {
 				c.GetComponent<Camera> ().enabled = false;
@@ -75,6 +74,15 @@ public class CameraManager {
         active.fieldOfView = angle;
     }
 
+	public bool StartAnimation() {
+		Animator anim = active.gameObject.GetComponent<Animator> ();
+		if (anim != null) {
+			anim.SetBool ("Go", true);
+			return true;
+		}
+		return false;
+	}
+
 	public void FadeTo(string cameraName) {
 		if (cameras.ContainsKey (cameraName)) {
 			isStable = false;
@@ -83,7 +91,7 @@ public class CameraManager {
 			fadescreen.FadeTime ();
 		}
 		else
-			Debug.Log ("Does not exist");
+			Debug.Log ("Does not exist : " + cameraName);
 	}
 
 	public void ActivateMain(){
@@ -91,6 +99,7 @@ public class CameraManager {
 		active = cameras [nextCamera].GetComponent<Camera> ();
 		active.enabled = true;
 		nextCamera = "";
+		Debug.Log(StartAnimation ());
 		isStable = true;
 	}
 
