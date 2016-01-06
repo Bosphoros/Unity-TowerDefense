@@ -14,7 +14,13 @@ public class Cinematic : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        
 
+        if(active == -1)
+        {
+            active = 1;
+            CameraManager.GetInstance().FadeTo("0");
+        }
         if (CameraManager.GetInstance().IsStable()) {
 
             if (active == 1)
@@ -25,18 +31,15 @@ public class Cinematic : MonoBehaviour {
 		    if (Input.GetKeyDown (KeyCode.Alpha1)) {
 			    active = 1;
 			    CameraManager.GetInstance ().FadeTo ("0");
-			    Debug.Log ("1");
 		    }
 		    if (Input.GetKeyDown (KeyCode.Alpha2)) {
 			    active = 2;
 			    CameraManager.GetInstance ().FadeTo ("1");
-			    Debug.Log ("2");
 		    }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 active = 3;
                 CameraManager.GetInstance().FadeTo("Head");
-                Debug.Log("3");
             }
 
         }
@@ -45,8 +48,8 @@ public class Cinematic : MonoBehaviour {
             isMute = !isMute;
             AudioManager.GetInstance().Mute(isMute);
         }
-        ecran.transform.LookAt(new Vector3(150, 80, 25), Vector3.up);
-        ecran.transform.RotateAround(new Vector3(150, 80, 25), Vector3.up, 0.3f * Time.timeScale);
+        ecran.transform.LookAt(new Vector3(150, 87, 25), Vector3.up);
+        /*ecran.transform.RotateAround(new Vector3(150, 80, 25), Vector3.up, 0.3f * Time.timeScale);*/
     }
 
     void OnDestroy()

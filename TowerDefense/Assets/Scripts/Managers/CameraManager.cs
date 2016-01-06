@@ -70,6 +70,11 @@ public class CameraManager {
         active.transform.position = p;
     }
 
+    public void Fov(float angle)
+    {
+        active.fieldOfView = angle;
+    }
+
 	public void FadeTo(string cameraName) {
 		if (cameras.ContainsKey (cameraName)) {
 			isStable = false;
@@ -83,7 +88,6 @@ public class CameraManager {
 
 	public void ActivateMain(){
 		active.enabled = false;
-        Debug.Log("Changing");
 		active = cameras [nextCamera].GetComponent<Camera> ();
 		active.enabled = true;
 		nextCamera = "";

@@ -87,23 +87,29 @@ public class AudioManager {
 	}
 
 	public void Play(string soundName, bool randPitch, bool loop, spatialization space, Vector3 pos, float distMin = 0, float distMax = 0) {
-		AudioData ad = sounds [soundName];
-		if (ad != null) {
-			AudioSource auSo = GetFreeAudioSource(ad.priority);
-			auSo.clip = ad.GetClip();
-			auSo.outputAudioMixerGroup = ad.group;
-			auSo.spatialBlend = (float) space;
-			auSo.gameObject.transform.position = pos;
-			auSo.minDistance = distMin;
-			auSo.maxDistance = distMax;
-			if(randPitch) {
-				auSo.pitch = Random.Range(ad.pitchMin, ad.pitchMax);
-			}
-			else {
-				auSo.pitch = 1;
-			}
-			auSo.Play();
-		}
+        if (sounds.ContainsKey(soundName))
+        {
+            AudioData ad = sounds[soundName];
+            if (ad != null)
+            {
+                AudioSource auSo = GetFreeAudioSource(ad.priority);
+                auSo.clip = ad.GetClip();
+                auSo.outputAudioMixerGroup = ad.group;
+                auSo.spatialBlend = (float)space;
+                auSo.gameObject.transform.position = pos;
+                auSo.minDistance = distMin;
+                auSo.maxDistance = distMax;
+                if (randPitch)
+                {
+                    auSo.pitch = Random.Range(ad.pitchMin, ad.pitchMax);
+                }
+                else
+                {
+                    auSo.pitch = 1;
+                }
+                auSo.Play();
+            }
+        }
 	}
 
     public void FreeResources()
