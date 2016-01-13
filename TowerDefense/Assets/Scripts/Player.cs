@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Player : LivingThing
 { 
@@ -23,6 +24,10 @@ public class Player : LivingThing
     public int explosiveTurrets = 0;
     public int maxExplosiveTurrets;
 
+    public Slider playerLifeBar;
+    public Slider repulseCDBar;
+    public Slider freezeCDBar;
+
     // Use this for initialization
     void Start () {
         lifeTime = 0;
@@ -31,7 +36,13 @@ public class Player : LivingThing
 
         grid = new Grid();
 		AudioManager.GetInstance ().Play ("Ambient", true, AudioManager.spatialization.AUDIO_2D);
-	}
+
+        UIManager.GetInstance().ShowPanel("Hud");
+
+        playerLifeBar = GameObject.Find("SliderLife").GetComponent<Slider>();
+        repulseCDBar = GameObject.Find("SliderCooldownRepulse").GetComponent<Slider>();
+        freezeCDBar = GameObject.Find("SliderCooldownFreeze").GetComponent<Slider>();
+    }
 
     void Awake()
     {
@@ -40,12 +51,8 @@ public class Player : LivingThing
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10,10,200,20), "Life : " + life);
         GUI.Label(new Rect(10, 30, 200, 20), "Time : " + ((int)(lifeTime*100.0f))/100.0f);
         GUI.Label(new Rect(10, 50, 200, 20), "Best : " + ((int)(PlayerPrefs.GetFloat("Time survived")*100.0f))/100.0f);
-
-        GUI.Label(new Rect(200, 10, 200, 20), "Repulse : " + Mathf.Clamp((int)(repulseWait - repulseCD), 0, 20));
-        GUI.Label(new Rect(200, 30, 200, 20), "Freeze : " + Mathf.Clamp((int)(freezeWait - freezeCD), 0, 20));
 
         GUI.Label(new Rect(400, 10, 200, 20), "Laser turrets : " + laserTurrets + "/" + maxLaserTurrets);
         GUI.Label(new Rect(400, 30, 200, 20), "Explosive turrets : " + explosiveTurrets + "/" + maxExplosiveTurrets);
@@ -177,29 +184,55 @@ public class Player : LivingThing
 
 	// Update is called once per frame
 	void Update () {
+
+        playerLifeBar.value = (float)life/(float)initialLife;
+        repulseCDBar.value = Mathf.Clamp(repulseCD, 0, repulseWait) / repulseWait;
+        freezeCDBar.value = Mathf.Clamp(freezeCD, 0, freezeWait) / freezeWait;
+
         lifeTime += Time.deltaTime;
         repulseCD += Time.deltaTime;
         freezeCD += Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Time.timeScale > 0)
         {
-            CastFreeze();
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                CastFreeze();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                CastRepulse();
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                BuildExplosiveTurret();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                BuildLaserTurret();
+            }
         }
-
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetButtonDown("Cancel"))
         {
-            CastRepulse();
+            OnPause();
         }
+    }
 
-
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+    public void OnPause()
+    {
+        if (Time.timeScale == 0)
         {
-            BuildExplosiveTurret();
+            Time.timeScale = 1;
+            UIManager.GetInstance().HidePanel("Pause");
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        else
         {
-            BuildLaserTurret();
+            Time.timeScale = 0;
+            UIManager.GetInstance().ShowPanel("Pause");
         }
     }
 
