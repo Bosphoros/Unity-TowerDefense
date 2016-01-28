@@ -18,15 +18,18 @@ public class ForwardEnemy : Enemy
     // Update is called once per frame
     void Update()
     {
-        if(freezeTime <= 0)
-        {
-            Vector3 targetPos = target.transform.position;
-            float speed = movementSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
-        }
-        else {
-            freezeTime -= Time.deltaTime;
-        }
+		LivingThing status = gameObject.GetComponent<LivingThing> ();
+		if (status != null) {
+			if (status.life > 0) {
+				if (freezeTime <= 0) {
+					Vector3 targetPos = target.transform.position;
+					float speed = movementSpeed * Time.deltaTime;
+					transform.position = Vector3.MoveTowards (transform.position, targetPos, speed);
+				} else {
+					freezeTime -= Time.deltaTime;
+				}
+			}
+		}
     }
 
     void OnDrawGizmos()

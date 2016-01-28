@@ -37,12 +37,20 @@ public class UIManager {
         if (panels.ContainsKey(name))
         {
             GameObject panel = panels[name];
-            if (panel != null)
+			if (panel != null)
                 panel.SetActive(true);
             return true;
         }
         return false;
     }
+
+	public bool FadeInPanel(string name){
+		if (ShowPanel (name)) {
+			panels [name].GetComponent<UIPanel> ().FadeIn ();
+			return true;
+		}
+		return false;
+	}
 
     public bool HidePanel(string name)
     {
@@ -56,13 +64,18 @@ public class UIManager {
         return false;
     }
 
-    public void CloseLastOpen()
-    {
-        if (open != null)
-        {
-            //open.SetActive(false);
-            open = null;
-        }
-    }
+	public bool FadeOutPanel(string name){
+		if (ShowPanel (name)) {
+			panels [name].GetComponent<UIPanel> ().FadeOut ();
+			return true;
+		}
+		return false;
+	}
+
+	public void HideAll() {
+		foreach (GameObject go in panels.Values) {
+			go.SetActive (false);
+		}
+	}
 
 }

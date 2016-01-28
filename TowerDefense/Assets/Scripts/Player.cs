@@ -27,6 +27,7 @@ public class Player : LivingThing
     public Slider playerLifeBar;
     public Slider repulseCDBar;
     public Slider freezeCDBar;
+	public Text timerText;
 
     // Use this for initialization
     void Start () {
@@ -47,23 +48,6 @@ public class Player : LivingThing
     void Awake()
     {
         life = initialLife;
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(10, 30, 200, 20), "Time : " + ((int)(lifeTime*100.0f))/100.0f);
-        GUI.Label(new Rect(10, 50, 200, 20), "Best : " + ((int)(PlayerPrefs.GetFloat("Time survived")*100.0f))/100.0f);
-
-        GUI.Label(new Rect(400, 10, 200, 20), "Laser turrets : " + laserTurrets + "/" + maxLaserTurrets);
-        GUI.Label(new Rect(400, 30, 200, 20), "Explosive turrets : " + explosiveTurrets + "/" + maxExplosiveTurrets);
-        if (life <= 0)
-        {
-            float prev = PlayerPrefs.GetFloat("Time survived");
-            PlayerPrefs.SetFloat("Time survived", Mathf.Max(prev, lifeTime));
-            GUI.Label(new Rect(200, 200, 500, 250), "Game Over");
-            Time.timeScale = 0;
-			AudioManager.GetInstance().Mute(true);
-        }
     }
 
     bool GetPositionOnGround(out Vector3 pos)
@@ -185,41 +169,40 @@ public class Player : LivingThing
 	// Update is called once per frame
 	void Update () {
 
-        playerLifeBar.value = (float)life/(float)initialLife;
-        repulseCDBar.value = Mathf.Clamp(repulseCD, 0, repulseWait) / repulseWait;
-        freezeCDBar.value = Mathf.Clamp(freezeCD, 0, freezeWait) / freezeWait;
+		if (life <= 0) {
+			GameOver ();
+		} else {
 
-        lifeTime += Time.deltaTime;
-        repulseCD += Time.deltaTime;
-        freezeCD += Time.deltaTime;
+			playerLifeBar.value = (float)life / (float)initialLife;
+			repulseCDBar.value = Mathf.Clamp (repulseCD, 0, repulseWait) / repulseWait;
+			freezeCDBar.value = Mathf.Clamp (freezeCD, 0, freezeWait) / freezeWait;
 
-        if (Time.timeScale > 0)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                CastFreeze();
-            }
+			lifeTime += Time.deltaTime;
+			repulseCD += Time.deltaTime;
+			freezeCD += Time.deltaTime;
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                CastRepulse();
-            }
+			if (Time.timeScale > 0) {
+				if (Input.GetKeyDown (KeyCode.Alpha1)) {
+					CastFreeze ();
+				}
+
+				if (Input.GetKeyDown (KeyCode.Alpha2)) {
+					CastRepulse ();
+				}
 
 
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                BuildExplosiveTurret();
-            }
+				if (Input.GetKeyDown (KeyCode.Alpha3)) {
+					BuildExplosiveTurret ();
+				}
 
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                BuildLaserTurret();
-            }
-        }
-        if (Input.GetButtonDown("Cancel"))
-        {
-            OnPause();
-        }
+				if (Input.GetKeyDown (KeyCode.Alpha4)) {
+					BuildLaserTurret ();
+				}
+			}
+			if (Input.GetButtonDown ("Cancel")) {
+				OnPause ();
+			}
+		}
     }
 
     public void OnPause()
@@ -236,7 +219,18 @@ public class Player : LivingThing
         }
     }
 
-
+	private void GameOver(){
+		float prev = PlayerPrefs.GetFloat("Time survived");
+		PlayerPrefs.SetFloat("Time survived", Mathf.Max(prev, lifeTime));
+		UIManager.GetInstance ().HideAll ();
+		UIManager.GetInstance ().FadeInPanel ("GameOver");
+		if (timerText == null) {
+			timerText = GameObject.Find ("TimerTextGameOver").GetComponent<Text> ();
+		}
+		timerText.text = "" + (float)(((int)(lifeTime*100))/100);
+		AudioManager.GetInstance().Mute(true);
+	}
+		
     void OnDrawGizmos()
     {
         float radius = gameObject.GetComponent<CapsuleCollider>().radius;

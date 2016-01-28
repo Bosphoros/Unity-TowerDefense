@@ -8,11 +8,25 @@ public class UIPanel : MonoBehaviour {
 
     public string panelID;
     public bool hideOnLoad = true;
-	// Use this for initialization
+	public float fadeSpeed;
+
+
 	void Start () {
         UIManager.GetInstance().RegisterPanel(gameObject, panelID);
         if(hideOnLoad)
             UIManager.GetInstance().HidePanel(panelID);
+	}
+
+	public void FadeIn() {
+		Image im = gameObject.GetComponent<Image> ();
+		im.canvasRenderer.SetAlpha (0);
+		im.CrossFadeAlpha (1, fadeSpeed, true);
+	}
+
+	public void FadeOut() {
+		Image im = gameObject.GetComponent<Image> ();
+		im.canvasRenderer.SetAlpha (1);
+		im.CrossFadeAlpha (0, fadeSpeed, true);
 	}
 
     void Awake()
